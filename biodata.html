@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marriage Biodata Maker | QuickDocs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+  <header class="bg-blue-600 text-white p-4 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-2xl font-bold">QuickDocs<span class="text-yellow-300">.in</span></a>
+      <a href="/resume" class="text-sm bg-blue-700 px-3 py-1 rounded hover:bg-blue-800">Switch to Resume Builder</a>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto my-6 p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white p-6 rounded-lg shadow border border-gray-200">
+      <h2 class="text-xl font-bold mb-4 text-red-600 border-b pb-2">Enter Personal & Family Details</h2>
+      <form class="space-y-3 text-sm">
+        <div><label class="font-semibold">Full Name</label><input type="text" id="inputName" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="font-semibold">Date of Birth</label><input type="text" id="inputDob" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+          <div><label class="font-semibold">Height</label><input type="text" id="inputHeight" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+        </div>
+        <div><label class="font-semibold">Education</label><input type="text" id="inputEdu" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+        <div><label class="font-semibold">Occupation & Income</label><input type="text" id="inputJob" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+        <div><label class="font-semibold">Father's Name & Occupation</label><input type="text" id="inputFather" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+        <div><label class="font-semibold">Contact Phone</label><input type="text" id="inputPhone" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+      </form>
+      <div class="mt-6 space-y-2">
+        <button onclick="downloadPDF(false)" class="w-full bg-gray-600 text-white py-2 rounded text-sm hover:bg-gray-700">Free Download (With Watermark)</button>
+        <button onclick="triggerPayment()" class="w-full bg-green-600 text-white py-2 rounded font-semibold text-sm hover:bg-green-700">Unlock HD PDF (No Watermark) - ₹29</button>
+      </div>
+    </div>
+
+    <div class="bg-gray-200 p-4 rounded flex flex-col items-center">
+      <h3 class="text-xs font-bold mb-2 text-gray-500">LIVE PREVIEW</h3>
+      <div id="pdfTemplate" class="bg-white w-full max-w-[420px] p-6 rounded shadow border text-gray-800">
+        <h2 id="prevName" class="text-2xl font-bold text-center text-red-700 mb-2 uppercase">YOUR NAME</h2>
+        <hr class="border-red-700 mb-4">
+        <table class="w-full text-xs space-y-1">
+          <tr class="border-b py-1"><td class="font-semibold w-1/3">DOB:</td><td id="prevDob">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold">Height:</td><td id="prevHeight">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold">Education:</td><td id="prevEdu">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold">Occupation:</td><td id="prevJob">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold">Father's Info:</td><td id="prevFather">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold">Contact:</td><td id="prevPhone">--</td></tr>
+        </table>
+        <div id="watermark" class="mt-8 text-center text-[10px] text-gray-400 font-bold border-t pt-2">CREATED ON QUICKDOCS.IN</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updatePreview() {
+      document.getElementById('prevName').innerText = document.getElementById('inputName').value || 'YOUR NAME';
+      document.getElementById('prevDob').innerText = document.getElementById('inputDob').value || '--';
+      document.getElementById('prevHeight').innerText = document.getElementById('inputHeight').value || '--';
+      document.getElementById('prevEdu').innerText = document.getElementById('inputEdu').value || '--';
+      document.getElementById('prevJob').innerText = document.getElementById('inputJob').value || '--';
+      document.getElementById('prevFather').innerText = document.getElementById('inputFather').value || '--';
+      document.getElementById('prevPhone').innerText = document.getElementById('inputPhone').value || '--';
+    }
+    function downloadPDF(isPaid) {
+      document.getElementById('watermark').style.display = isPaid ? 'none' : 'block';
+      html2pdf().set({ margin: 0.4, filename: 'Marriage_Biodata.pdf', html2canvas: { scale: 2 } }).from(document.getElementById('pdfTemplate')).save();
+    }
+    function triggerPayment() { alert("Razorpay Modal Opens for ₹29 payment."); }
+  </script>
+</body>
+</html>
