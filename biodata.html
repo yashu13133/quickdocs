@@ -11,8 +11,9 @@
     .a4-canvas {
       width: 100%;
       max-width: 450px;
-      min-height: 650px;
+      min-height: 630px;
       box-sizing: border-box;
+      background-color: #ffffff !important;
     }
     .pdf-table {
       width: 100% !important;
@@ -20,7 +21,7 @@
       table-layout: fixed !important;
     }
     .pdf-table td {
-      padding: 3px 5px !important;
+      padding: 4px 6px !important;
       vertical-align: top !important;
       word-wrap: break-word !important;
     }
@@ -37,27 +38,44 @@
 
   <main class="max-w-6xl mx-auto my-6 px-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT PANEL: Guided Form -->
+    <!-- LEFT PANEL: Form Editor -->
     <div class="lg:col-span-7 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
       
+      <!-- VISUAL TEMPLATE SELECTOR -->
       <div class="mb-6 border-b pb-4">
-        <label class="block text-sm font-bold text-gray-700 mb-2">1. Select Template Theme</label>
-        <div class="grid grid-cols-3 gap-2">
-          <button type="button" onclick="setTheme('maroon')" id="btn-maroon" class="py-2 px-3 text-xs font-bold rounded border border-red-600 bg-red-50 text-red-700">Traditional Maroon</button>
-          <button type="button" onclick="setTheme('navy')" id="btn-navy" class="py-2 px-3 text-xs font-bold rounded border border-gray-300 bg-white text-gray-700">Royal Navy</button>
-          <button type="button" onclick="setTheme('slate')" id="btn-slate" class="py-2 px-3 text-xs font-bold rounded border border-gray-300 bg-white text-gray-700">Clean Slate</button>
+        <label class="block text-sm font-bold text-gray-700 mb-2">1. Choose Biodata Template Design</label>
+        <div class="grid grid-cols-3 gap-3">
+          
+          <!-- Template Card 1: Maroon -->
+          <div onclick="setTheme('maroon')" id="card-maroon" class="cursor-pointer border-2 border-red-600 rounded-lg p-2 bg-red-50/40 text-center transition hover:shadow-md">
+            <div class="h-10 bg-red-100 rounded mb-1.5 flex items-center justify-center text-red-700 font-bold text-xs">ॐ MAROON</div>
+            <span class="text-[11px] font-bold text-red-800 block">Traditional Maroon</span>
+          </div>
+
+          <!-- Template Card 2: Navy -->
+          <div onclick="setTheme('navy')" id="card-navy" class="cursor-pointer border-2 border-gray-200 rounded-lg p-2 bg-white text-center transition hover:shadow-md">
+            <div class="h-10 bg-blue-100 rounded mb-1.5 flex items-center justify-center text-blue-900 font-bold text-xs">ROYAL NAVY</div>
+            <span class="text-[11px] font-bold text-blue-900 block">Royal Navy</span>
+          </div>
+
+          <!-- Template Card 3: Slate -->
+          <div onclick="setTheme('slate')" id="card-slate" class="cursor-pointer border-2 border-gray-200 rounded-lg p-2 bg-white text-center transition hover:shadow-md">
+            <div class="h-10 bg-gray-100 rounded mb-1.5 flex items-center justify-center text-gray-800 font-bold text-xs">CLEAN SLATE</div>
+            <span class="text-[11px] font-bold text-gray-700 block">Clean Slate</span>
+          </div>
+
         </div>
       </div>
 
-      <h2 class="text-lg font-bold text-gray-800 mb-4">2. Fill Biodata Details</h2>
+      <h2 class="text-lg font-bold text-gray-800 mb-4">2. Fill Details</h2>
 
       <form id="biodataForm" class="space-y-4" onsubmit="return false;">
         
         <!-- SECTION 1: Personal Details -->
         <details open class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
-            <span>👤 Personal Information</span>
-            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+            <span>👤 Personal Details</span>
+            <span class="text-xs text-blue-600 font-normal">Toggle</span>
           </summary>
           <div class="mt-3 space-y-3 text-xs">
             <div class="grid grid-cols-2 gap-2">
@@ -146,12 +164,12 @@
         <details class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
             <span>🎓 Education & Occupation</span>
-            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+            <span class="text-xs text-blue-600 font-normal">Toggle</span>
           </summary>
           <div class="mt-3 space-y-3 text-xs">
             <div>
               <label class="block font-semibold mb-1">Highest Qualification</label>
-              <input type="text" id="fEdu" placeholder="Master of Computer Applications (MCA)" oninput="updateAll()" class="w-full p-2 border rounded">
+              <input type="text" id="fEdu" placeholder="MCA" oninput="updateAll()" class="w-full p-2 border rounded">
             </div>
             <div>
               <label class="block font-semibold mb-1">Occupation / Organization</label>
@@ -168,12 +186,12 @@
         <details class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
             <span>👨‍👩‍👧‍👦 Family Background</span>
-            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+            <span class="text-xs text-blue-600 font-normal">Toggle</span>
           </summary>
           <div class="mt-3 space-y-3 text-xs">
             <div>
               <label class="block font-semibold mb-1">Father's Name & Occupation</label>
-              <input type="text" id="fFather" placeholder="Mr. Veerendra Vyas (Business)" oninput="updateAll()" class="w-full p-2 border rounded">
+              <input type="text" id="fFather" placeholder="Mr. Veerendra Vyas" oninput="updateAll()" class="w-full p-2 border rounded">
             </div>
             <div>
               <label class="block font-semibold mb-1">Mother's Name & Occupation</label>
@@ -181,7 +199,7 @@
             </div>
             <div>
               <label class="block font-semibold mb-1">Siblings</label>
-              <input type="text" id="fSiblings" placeholder="1 Sister (Married)" oninput="updateAll()" class="w-full p-2 border rounded">
+              <input type="text" id="fSiblings" placeholder="1 Sister" oninput="updateAll()" class="w-full p-2 border rounded">
             </div>
             <div>
               <label class="block font-semibold mb-1">Native Place</label>
@@ -190,11 +208,11 @@
           </div>
         </details>
 
-        <!-- SECTION 4: Contact, Photo & Expectations -->
+        <!-- SECTION 4: Contact & Photo -->
         <details open class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
-            <span>📞 Contact, Photo & Expectations</span>
-            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+            <span>📞 Contact Info & Profile Photo</span>
+            <span class="text-xs text-blue-600 font-normal">Toggle</span>
           </summary>
           <div class="mt-3 space-y-3 text-xs">
             <div>
@@ -203,10 +221,10 @@
             </div>
             <div>
               <label class="block font-semibold mb-1">Full Residential Address</label>
-              <input type="text" id="fAddress" placeholder="Full residential address" oninput="updateAll()" class="w-full p-2 border rounded">
+              <input type="text" id="fAddress" placeholder="Jaipur, Rajasthan" oninput="updateAll()" class="w-full p-2 border rounded">
             </div>
             <div>
-              <label class="block font-semibold mb-1">Partner Expectations (Apeksha)</label>
+              <label class="block font-semibold mb-1">Partner Expectations</label>
               <textarea id="fExpectation" placeholder="Looking for a well-educated partner..." oninput="updateAll()" class="w-full p-2 border rounded h-16"></textarea>
             </div>
             <div>
@@ -229,40 +247,43 @@
       <div class="sticky top-20 w-full flex flex-col items-center">
         <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">A4 Printable Canvas Preview</span>
 
+        <!-- CANVAS RENDER BOX USING STRICT INLINE STYLES FOR PDF CAPTURE -->
         <div id="pdfCanvas" class="a4-canvas bg-white p-6 rounded shadow-lg border border-gray-300 text-gray-800 text-xs flex flex-col justify-between">
           <div>
-            <div id="pSymbol" class="text-center text-xl font-bold text-red-700 mb-1">ॐ</div>
-            <h2 id="pHeader" class="text-center text-[10px] font-extrabold tracking-widest text-red-700 uppercase mb-1">MARRIAGE BIODATA</h2>
-            <h1 id="pName" class="text-xl font-bold text-center text-gray-900 uppercase border-b-2 border-red-700 pb-2 mb-4">YOUR NAME HERE</h1>
+            <div id="pSymbol" style="text-align: center; font-size: 20px; font-weight: bold; color: #b91c1c; margin-bottom: 2px;">ॐ</div>
+            <h2 id="pHeader" style="text-align: center; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #b91c1c; text-transform: uppercase; margin-bottom: 4px;">MARRIAGE BIODATA</h2>
+            <h1 id="pName" style="text-align: center; font-size: 20px; font-weight: bold; color: #111827; text-transform: uppercase; border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">YOUR NAME HERE</h1>
 
+            <!-- Profile Photo -->
             <div id="pPhotoBox" class="hidden mb-4 flex justify-center">
-              <img id="pImg" src="" alt="Photo" class="w-24 h-28 object-cover border-2 border-red-700 rounded">
+              <img id="pImg" src="" alt="Photo" style="width: 100px; height: 120px; object-fit: cover; border: 2px solid #b91c1c; border-radius: 4px;">
             </div>
 
+            <!-- Content Tables -->
             <div class="space-y-3">
               <div>
-                <div id="hPersonal" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Personal Details</div>
+                <div id="hPersonal" style="font-weight: bold; font-size: 10px; background-color: #fef2f2; color: #991b1b; padding: 3px 8px; border-left: 3px solid #b91c1c; text-transform: uppercase; margin-bottom: 4px;">Personal Details</div>
                 <table class="pdf-table"><tbody id="tbPersonal"></tbody></table>
               </div>
 
               <div>
-                <div id="hEdu" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Education & Career</div>
+                <div id="hEdu" style="font-weight: bold; font-size: 10px; background-color: #fef2f2; color: #991b1b; padding: 3px 8px; border-left: 3px solid #b91c1c; text-transform: uppercase; margin-bottom: 4px;">Education & Career</div>
                 <table class="pdf-table"><tbody id="tbEdu"></tbody></table>
               </div>
 
               <div>
-                <div id="hFamily" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Family Background</div>
+                <div id="hFamily" style="font-weight: bold; font-size: 10px; background-color: #fef2f2; color: #991b1b; padding: 3px 8px; border-left: 3px solid #b91c1c; text-transform: uppercase; margin-bottom: 4px;">Family Background</div>
                 <table class="pdf-table"><tbody id="tbFamily"></tbody></table>
               </div>
 
               <div>
-                <div id="hContact" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Contact & Expectations</div>
+                <div id="hContact" style="font-weight: bold; font-size: 10px; background-color: #fef2f2; color: #991b1b; padding: 3px 8px; border-left: 3px solid #b91c1c; text-transform: uppercase; margin-bottom: 4px;">Contact & Expectations</div>
                 <table class="pdf-table"><tbody id="tbContact"></tbody></table>
               </div>
             </div>
           </div>
 
-          <div id="pdfWatermark" class="mt-6 text-center text-[9px] text-gray-400 font-bold border-t pt-2 uppercase">
+          <div id="pdfWatermark" style="margin-top: 24px; text-align: center; font-size: 9px; color: #9ca3af; font-weight: bold; border-top: 1px solid #e5e7eb; padding-top: 8px; text-transform: uppercase;">
             CREATED FREE ON QUICKDOCS.IN
           </div>
 
@@ -295,7 +316,11 @@
   </div>
 
   <script>
-    let appState = { theme: 'maroon', photo: '', data: {} };
+    let appState = {
+      theme: 'maroon',
+      photo: '',
+      data: {}
+    };
 
     function updateAll() {
       appState.data = {
@@ -348,7 +373,10 @@
       document.getElementById('pSymbol').innerText = d.symbol || '';
       document.getElementById('pName').innerText = d.name || 'YOUR NAME HERE';
 
-      const row = (label, value) => value ? `<tr><td style="width:38%; font-weight:600; color:#4b5563;">${label}:</td><td style="width:62%; font-weight:700; color:#111827;">${value}</td></tr>` : '';
+      const row = (label, value) => {
+        if (!value) return '';
+        return `<tr><td style="width:38%; font-weight:600; color:#4b5563;">${label}:</td><td style="width:62%; font-weight:700; color:#111827;">${value}</td></tr>`;
+      };
 
       let dobDetails = [formatDate(d.dob), d.tob, d.pob].filter(Boolean).join(' | ');
 
@@ -380,23 +408,49 @@
 
     function setTheme(theme) {
       appState.theme = theme;
-      const headers = ['hPersonal', 'hEdu', 'hFamily', 'hContact'];
+      
+      const cards = ['maroon', 'navy', 'slate'];
+      cards.forEach(c => {
+        const card = document.getElementById('card-' + c);
+        if (c === theme) {
+          card.style.borderColor = c === 'maroon' ? '#b91c1c' : (c === 'navy' ? '#1e3a8a' : '#374151');
+          card.style.backgroundColor = c === 'maroon' ? '#fef2f2' : (c === 'navy' ? '#eff6ff' : '#f9fafb');
+        } else {
+          card.style.borderColor = '#e5e7eb';
+          card.style.backgroundColor = '#ffffff';
+        }
+      });
+
+      const pSymbol = document.getElementById('pSymbol');
       const pHeader = document.getElementById('pHeader');
       const pName = document.getElementById('pName');
-      const pSymbol = document.getElementById('pSymbol');
+      const pImg = document.getElementById('pImg');
+      const headers = ['hPersonal', 'hEdu', 'hFamily', 'hContact'];
 
       if (theme === 'maroon') {
         pSymbol.style.color = '#b91c1c'; pHeader.style.color = '#b91c1c';
-        pName.className = "text-xl font-bold text-center text-gray-900 uppercase border-b-2 border-red-700 pb-2 mb-4";
-        headers.forEach(h => document.getElementById(h).className = "font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase");
+        pName.style.borderBottom = '2px solid #b91c1c'; pName.style.color = '#111827';
+        pImg.style.borderColor = '#b91c1c';
+        headers.forEach(h => {
+          const el = document.getElementById(h);
+          el.style.backgroundColor = '#fef2f2'; el.style.color = '#991b1b'; el.style.borderLeft = '3px solid #b91c1c';
+        });
       } else if (theme === 'navy') {
         pSymbol.style.color = '#1e3a8a'; pHeader.style.color = '#1e3a8a';
-        pName.className = "text-xl font-bold text-center text-blue-900 uppercase border-b-2 border-blue-800 pb-2 mb-4";
-        headers.forEach(h => document.getElementById(h).className = "font-bold text-[10px] bg-blue-50 text-blue-900 px-2 py-0.5 rounded border-l-2 border-blue-800 mb-1 uppercase");
-      } else {
+        pName.style.borderBottom = '2px solid #1e3a8a'; pName.style.color = '#1e3a8a';
+        pImg.style.borderColor = '#1e3a8a';
+        headers.forEach(h => {
+          const el = document.getElementById(h);
+          el.style.backgroundColor = '#eff6ff'; el.style.color = '#1e3a8a'; el.style.borderLeft = '3px solid #1e3a8a';
+        });
+      } else { // slate
         pSymbol.style.color = '#374151'; pHeader.style.color = '#374151';
-        pName.className = "text-xl font-bold text-center text-gray-800 uppercase border-b border-gray-400 pb-2 mb-4";
-        headers.forEach(h => document.getElementById(h).className = "font-bold text-[10px] text-gray-800 border-b border-gray-300 pb-0.5 mb-1 uppercase tracking-wide");
+        pName.style.borderBottom = '1px solid #9ca3af'; pName.style.color = '#374151';
+        pImg.style.borderColor = '#374151';
+        headers.forEach(h => {
+          const el = document.getElementById(h);
+          el.style.backgroundColor = '#f3f4f6'; el.style.color = '#1f2937'; el.style.borderLeft = '3px solid #4b5563';
+        });
       }
     }
 
@@ -406,14 +460,18 @@
     function generatePDF(isPaid) {
       closeModal();
       document.getElementById('pdfWatermark').style.display = isPaid ? 'none' : 'block';
-      const el = document.getElementById('pdfCanvas');
-      html2pdf().set({
-        margin: 0.2,
-        filename: `${(appState.data.name || 'Biodata').replace(/\s+/g, '_')}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      }).from(el).save().then(() => {
+      
+      const element = document.getElementById('pdfCanvas');
+      
+      const opt = {
+        margin:       0.2,
+        filename:     `${(appState.data.name || 'Biodata').replace(/\s+/g, '_')}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(() => {
         document.getElementById('pdfWatermark').style.display = 'block';
       });
     }
