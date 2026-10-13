@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marriage Biodata Maker | QuickDocs.in</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- html2pdf.js for client-side PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+  <!-- Header / Navigation -->
+  <header class="bg-blue-600 text-white p-4 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">QuickDocs<span class="text-yellow-300">.in</span></h1>
+      <nav>
+        <a href="#biodata" class="px-3 py-1 bg-blue-700 rounded mr-2 hover:bg-blue-800">Biodata Maker</a>
+        <a href="#resume" class="px-3 py-1 bg-blue-700 rounded hover:bg-blue-800">ATS Resume Builder</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="max-w-6xl mx-auto my-6 p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- LEFT PANEL: Input Form -->
+    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <h2 class="text-xl font-bold mb-4 border-b pb-2 text-blue-600">Enter Biodata Details</h2>
+      
+      <form id="biodataForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Full Name</label>
+          <input type="text" id="inputName" placeholder="e.g. Ramesh Sharma" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Date of Birth</label>
+            <input type="text" id="inputDob" placeholder="DD/MM/YYYY" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Height</label>
+            <input type="text" id="inputHeight" placeholder="e.g. 5 ft 10 in" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Education</label>
+          <input type="text" id="inputEducation" placeholder="e.g. B.Tech in Computer Science" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Occupation & Income</label>
+          <input type="text" id="inputJob" placeholder="e.g. Software Engineer (₹12 LPA)" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Contact Number</label>
+          <input type="text" id="inputContact" placeholder="+91 9876543210" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+        </div>
+      </form>
+
+      <!-- DOWNLOAD BUTTONS -->
+      <div class="mt-6 space-y-2">
+        <button onclick="downloadPDF(false)" class="w-full bg-gray-600 text-white py-2 rounded hover:bg-gray-700 transition">
+          Free Download (Standard Quality with Watermark)
+        </button>
+        <button onclick="triggerPayment()" class="w-full bg-green-600 text-white py-2 rounded font-semibold hover:bg-green-700 transition">
+          Unlock HD PDF (No Watermark) - ₹29
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Live Document Preview -->
+    <div class="bg-gray-200 p-4 rounded-lg flex flex-col items-center">
+      <h3 class="text-sm font-bold mb-2 text-gray-600">LIVE PREVIEW</h3>
+      
+      <!-- Preview Container that turns into PDF -->
+      <div id="pdfTemplate" class="bg-white w-full max-w-[450px] p-8 rounded shadow-md relative text-gray-800 border border-gray-300">
+        <h2 id="previewName" class="text-2xl font-bold text-center text-red-700 mb-4 uppercase">YOUR NAME</h2>
+        <hr class="border-red-700 mb-4">
+        
+        <table class="w-full text-sm border-collapse">
+          <tr class="border-b py-1"><td class="font-semibold w-1/3 py-1">Date of Birth:</td><td id="previewDob">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold py-1">Height:</td><td id="previewHeight">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold py-1">Education:</td><td id="previewEducation">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold py-1">Occupation:</td><td id="previewJob">--</td></tr>
+          <tr class="border-b py-1"><td class="font-semibold py-1">Contact:</td><td id="previewContact">--</td></tr>
+        </table>
+
+        <!-- Watermark Container -->
+        <div id="watermark" class="mt-8 text-center text-xs text-gray-400 font-bold tracking-widest border-t pt-2">
+          CREATED ON QUICKDOCS.IN
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    function updatePreview() {
+      document.getElementById('previewName').innerText = document.getElementById('inputName').value || 'YOUR NAME';
+      document.getElementById('previewDob').innerText = document.getElementById('inputDob').value || '--';
+      document.getElementById('previewHeight').innerText = document.getElementById('inputHeight').value || '--';
+      document.getElementById('previewEducation').innerText = document.getElementById('inputEducation').value || '--';
+      document.getElementById('previewJob').innerText = document.getElementById('inputJob').value || '--';
+      document.getElementById('previewContact').innerText = document.getElementById('inputContact').value || '--';
+    }
+
+    function downloadPDF(isPaid) {
+      const watermark = document.getElementById('watermark');
+      if (isPaid) {
+        watermark.style.display = 'none'; // Hide watermark for paid version
+      } else {
+        watermark.style.display = 'block';
+      }
+
+      const element = document.getElementById('pdfTemplate');
+      const opt = {
+        margin:       0.5,
+        filename:     'Marriage_Biodata_QuickDocs.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save();
+    }
+
+    function triggerPayment() {
+      alert("Payment Gateway Integration Point: Razorpay modal opens here for ₹29. On success, downloadPDF(true) triggers.");
+    }
+  </script>
+</body>
+</html>
