@@ -6,68 +6,432 @@
   <title>Marriage Biodata Maker | QuickDocs</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    .a4-canvas {
+      width: 100%;
+      max-width: 450px;
+      min-height: 650px;
+      box-sizing: border-box;
+    }
+    .pdf-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      table-layout: fixed !important;
+    }
+    .pdf-table td {
+      padding: 3px 5px !important;
+      vertical-align: top !important;
+      word-wrap: break-word !important;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-800">
-  <header class="bg-blue-600 text-white p-4 shadow-md">
+<body class="bg-gray-100 font-sans text-gray-800 min-h-screen">
+
+  <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-50">
     <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <a href="/" class="text-2xl font-bold">QuickDocs<span class="text-yellow-300">.in</span></a>
-      <a href="/resume" class="text-sm bg-blue-700 px-3 py-1 rounded hover:bg-blue-800">Switch to Resume Builder</a>
+      <a href="/" class="text-2xl font-bold tracking-tight">QuickDocs<span class="text-yellow-300">.in</span></a>
+      <a href="/resume" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded transition">Switch to ATS Resume Builder</a>
     </div>
   </header>
 
-  <div class="max-w-6xl mx-auto my-6 p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-white p-6 rounded-lg shadow border border-gray-200">
-      <h2 class="text-xl font-bold mb-4 text-red-600 border-b pb-2">Enter Personal & Family Details</h2>
-      <form class="space-y-3 text-sm">
-        <div><label class="font-semibold">Full Name</label><input type="text" id="inputName" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
-        <div class="grid grid-cols-2 gap-2">
-          <div><label class="font-semibold">Date of Birth</label><input type="text" id="inputDob" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
-          <div><label class="font-semibold">Height</label><input type="text" id="inputHeight" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+  <main class="max-w-6xl mx-auto my-6 px-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT PANEL: Guided Form -->
+    <div class="lg:col-span-7 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      
+      <div class="mb-6 border-b pb-4">
+        <label class="block text-sm font-bold text-gray-700 mb-2">1. Select Template Theme</label>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="setTheme('maroon')" id="btn-maroon" class="py-2 px-3 text-xs font-bold rounded border border-red-600 bg-red-50 text-red-700">Traditional Maroon</button>
+          <button type="button" onclick="setTheme('navy')" id="btn-navy" class="py-2 px-3 text-xs font-bold rounded border border-gray-300 bg-white text-gray-700">Royal Navy</button>
+          <button type="button" onclick="setTheme('slate')" id="btn-slate" class="py-2 px-3 text-xs font-bold rounded border border-gray-300 bg-white text-gray-700">Clean Slate</button>
         </div>
-        <div><label class="font-semibold">Education</label><input type="text" id="inputEdu" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
-        <div><label class="font-semibold">Occupation & Income</label><input type="text" id="inputJob" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
-        <div><label class="font-semibold">Father's Name & Occupation</label><input type="text" id="inputFather" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
-        <div><label class="font-semibold">Contact Phone</label><input type="text" id="inputPhone" class="w-full p-2 border rounded" oninput="updatePreview()"></div>
+      </div>
+
+      <h2 class="text-lg font-bold text-gray-800 mb-4">2. Fill Biodata Details</h2>
+
+      <form id="biodataForm" class="space-y-4" onsubmit="return false;">
+        
+        <!-- SECTION 1: Personal Details -->
+        <details open class="border rounded-lg p-3 bg-gray-50">
+          <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
+            <span>👤 Personal Information</span>
+            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+          </summary>
+          <div class="mt-3 space-y-3 text-xs">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold mb-1">Header Symbol</label>
+                <select id="fSymbol" onchange="updateAll()" class="w-full p-2 border rounded bg-white">
+                  <option value="ॐ">ॐ (Om)</option>
+                  <option value="卐">卐 (Swastik)</option>
+                  <option value="ੴ">ੴ (Ik Onkar)</option>
+                  <option value="☪">☪ (Crescent)</option>
+                  <option value="✝">✝ (Cross)</option>
+                  <option value="">None</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Full Name *</label>
+                <input type="text" id="fName" placeholder="e.g. Yash Vyas" oninput="updateAll()" class="w-full p-2 border rounded">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label class="block font-semibold mb-1">Date of Birth</label>
+                <input type="date" id="fDob" onchange="updateAll()" class="w-full p-2 border rounded bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Time of Birth</label>
+                <input type="time" id="fTob" onchange="updateAll()" class="w-full p-2 border rounded bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Place of Birth</label>
+                <input type="text" id="fPob" placeholder="Jaipur" oninput="updateAll()" class="w-full p-2 border rounded">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold mb-1">Height</label>
+                <select id="fHeight" onchange="updateAll()" class="w-full p-2 border rounded bg-white">
+                  <option value="">Select Height</option>
+                  <option value="5'0&quot;">5 ft 0 in</option>
+                  <option value="5'2&quot;">5 ft 2 in</option>
+                  <option value="5'4&quot;">5 ft 4 in</option>
+                  <option value="5'6&quot;">5 ft 6 in</option>
+                  <option value="5'8&quot;">5 ft 8 in</option>
+                  <option value="5'10&quot;">5 ft 10 in</option>
+                  <option value="6'0&quot;">6 ft 0 in</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Complexion / Blood Group</label>
+                <input type="text" id="fComplexion" placeholder="Fair / B+" oninput="updateAll()" class="w-full p-2 border rounded">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold mb-1">Religion & Caste</label>
+                <input type="text" id="fCaste" placeholder="Hindu, Brahmin" oninput="updateAll()" class="w-full p-2 border rounded">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Gotra</label>
+                <input type="text" id="fGotra" placeholder="Vashishtha" oninput="updateAll()" class="w-full p-2 border rounded">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold mb-1">Kuldevi / Family Deity</label>
+                <input type="text" id="fKuldevi" placeholder="e.g. Maa Karni" oninput="updateAll()" class="w-full p-2 border rounded">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Manglik Status</label>
+                <select id="fManglik" onchange="updateAll()" class="w-full p-2 border rounded bg-white">
+                  <option value="Non-Manglik">Non-Manglik</option>
+                  <option value="Manglik">Manglik</option>
+                  <option value="Anshik Manglik">Anshik Manglik</option>
+                  <option value="Not Applicable">Not Applicable</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- SECTION 2: Education & Career -->
+        <details class="border rounded-lg p-3 bg-gray-50">
+          <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
+            <span>🎓 Education & Occupation</span>
+            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+          </summary>
+          <div class="mt-3 space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold mb-1">Highest Qualification</label>
+              <input type="text" id="fEdu" placeholder="Master of Computer Applications (MCA)" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Occupation / Organization</label>
+              <input type="text" id="fJob" placeholder="Software Engineer / Student" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Annual Income (Optional)</label>
+              <input type="text" id="fIncome" placeholder="₹12 LPA" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+          </div>
+        </details>
+
+        <!-- SECTION 3: Family Details -->
+        <details class="border rounded-lg p-3 bg-gray-50">
+          <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
+            <span>👨‍👩‍👧‍👦 Family Background</span>
+            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+          </summary>
+          <div class="mt-3 space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold mb-1">Father's Name & Occupation</label>
+              <input type="text" id="fFather" placeholder="Mr. Veerendra Vyas (Business)" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Mother's Name & Occupation</label>
+              <input type="text" id="fMother" placeholder="Homemaker" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Siblings</label>
+              <input type="text" id="fSiblings" placeholder="1 Sister (Married)" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Native Place</label>
+              <input type="text" id="fNative" placeholder="Jaipur, Rajasthan" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+          </div>
+        </details>
+
+        <!-- SECTION 4: Contact, Photo & Expectations -->
+        <details open class="border rounded-lg p-3 bg-gray-50">
+          <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
+            <span>📞 Contact, Photo & Expectations</span>
+            <span class="text-xs text-blue-600 font-normal">Expand / Collapse</span>
+          </summary>
+          <div class="mt-3 space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold mb-1">Contact Phone Number *</label>
+              <input type="text" id="fPhone" placeholder="+91 8306183428" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Full Residential Address</label>
+              <input type="text" id="fAddress" placeholder="Full residential address" oninput="updateAll()" class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Partner Expectations (Apeksha)</label>
+              <textarea id="fExpectation" placeholder="Looking for a well-educated partner..." oninput="updateAll()" class="w-full p-2 border rounded h-16"></textarea>
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Profile Photo Upload</label>
+              <input type="file" accept="image/*" onchange="uploadPhoto(event)" class="w-full p-1.5 border rounded bg-white text-xs">
+            </div>
+          </div>
+        </details>
+
       </form>
-      <div class="mt-6 space-y-2">
-        <button onclick="downloadPDF(false)" class="w-full bg-gray-600 text-white py-2 rounded text-sm hover:bg-gray-700">Free Download (With Watermark)</button>
-        <button onclick="triggerPayment()" class="w-full bg-green-600 text-white py-2 rounded font-semibold text-sm hover:bg-green-700">Unlock HD PDF (No Watermark) - ₹29</button>
+
+      <button onclick="openModal()" class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow transition">
+        Download Marriage Biodata PDF
+      </button>
+
+    </div>
+
+    <!-- RIGHT PANEL: Fixed Printable Canvas Preview -->
+    <div class="lg:col-span-5 flex flex-col items-center">
+      <div class="sticky top-20 w-full flex flex-col items-center">
+        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">A4 Printable Canvas Preview</span>
+
+        <div id="pdfCanvas" class="a4-canvas bg-white p-6 rounded shadow-lg border border-gray-300 text-gray-800 text-xs flex flex-col justify-between">
+          <div>
+            <div id="pSymbol" class="text-center text-xl font-bold text-red-700 mb-1">ॐ</div>
+            <h2 id="pHeader" class="text-center text-[10px] font-extrabold tracking-widest text-red-700 uppercase mb-1">MARRIAGE BIODATA</h2>
+            <h1 id="pName" class="text-xl font-bold text-center text-gray-900 uppercase border-b-2 border-red-700 pb-2 mb-4">YOUR NAME HERE</h1>
+
+            <div id="pPhotoBox" class="hidden mb-4 flex justify-center">
+              <img id="pImg" src="" alt="Photo" class="w-24 h-28 object-cover border-2 border-red-700 rounded">
+            </div>
+
+            <div class="space-y-3">
+              <div>
+                <div id="hPersonal" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Personal Details</div>
+                <table class="pdf-table"><tbody id="tbPersonal"></tbody></table>
+              </div>
+
+              <div>
+                <div id="hEdu" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Education & Career</div>
+                <table class="pdf-table"><tbody id="tbEdu"></tbody></table>
+              </div>
+
+              <div>
+                <div id="hFamily" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Family Background</div>
+                <table class="pdf-table"><tbody id="tbFamily"></tbody></table>
+              </div>
+
+              <div>
+                <div id="hContact" class="font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase">Contact & Expectations</div>
+                <table class="pdf-table"><tbody id="tbContact"></tbody></table>
+              </div>
+            </div>
+          </div>
+
+          <div id="pdfWatermark" class="mt-6 text-center text-[9px] text-gray-400 font-bold border-t pt-2 uppercase">
+            CREATED FREE ON QUICKDOCS.IN
+          </div>
+
+        </div>
       </div>
     </div>
 
-    <div class="bg-gray-200 p-4 rounded flex flex-col items-center">
-      <h3 class="text-xs font-bold mb-2 text-gray-500">LIVE PREVIEW</h3>
-      <div id="pdfTemplate" class="bg-white w-full max-w-[420px] p-6 rounded shadow border text-gray-800">
-        <h2 id="prevName" class="text-2xl font-bold text-center text-red-700 mb-2 uppercase">YOUR NAME</h2>
-        <hr class="border-red-700 mb-4">
-        <table class="w-full text-xs space-y-1">
-          <tr class="border-b py-1"><td class="font-semibold w-1/3">DOB:</td><td id="prevDob">--</td></tr>
-          <tr class="border-b py-1"><td class="font-semibold">Height:</td><td id="prevHeight">--</td></tr>
-          <tr class="border-b py-1"><td class="font-semibold">Education:</td><td id="prevEdu">--</td></tr>
-          <tr class="border-b py-1"><td class="font-semibold">Occupation:</td><td id="prevJob">--</td></tr>
-          <tr class="border-b py-1"><td class="font-semibold">Father's Info:</td><td id="prevFather">--</td></tr>
-          <tr class="border-b py-1"><td class="font-semibold">Contact:</td><td id="prevPhone">--</td></tr>
-        </table>
-        <div id="watermark" class="mt-8 text-center text-[10px] text-gray-400 font-bold border-t pt-2">CREATED ON QUICKDOCS.IN</div>
+  </main>
+
+  <!-- Download Modal -->
+  <div id="downloadModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-gray-900">Download Options</h3>
+        <button onclick="closeModal()" class="text-gray-400 font-bold text-xl">&times;</button>
+      </div>
+      <div class="space-y-3">
+        <div class="border p-3 rounded-lg bg-gray-50">
+          <span class="font-bold text-xs text-gray-800 block">Standard Download</span>
+          <p class="text-[11px] text-gray-500 mb-2">Free download with footer badge.</p>
+          <button onclick="generatePDF(false)" class="w-full bg-gray-700 text-white font-bold py-2 rounded text-xs">Free Download</button>
+        </div>
+        <div class="border-2 border-green-500 p-3 rounded-lg bg-green-50">
+          <span class="font-bold text-xs text-green-900 block">Ultra-HD Print Pass (₹29)</span>
+          <p class="text-[11px] text-gray-600 mb-2">Watermark-free high-resolution print PDF.</p>
+          <button onclick="payAndDownload()" class="w-full bg-green-600 text-white font-bold py-2 rounded text-xs">Unlock HD PDF - ₹29</button>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    function updatePreview() {
-      document.getElementById('prevName').innerText = document.getElementById('inputName').value || 'YOUR NAME';
-      document.getElementById('prevDob').innerText = document.getElementById('inputDob').value || '--';
-      document.getElementById('prevHeight').innerText = document.getElementById('inputHeight').value || '--';
-      document.getElementById('prevEdu').innerText = document.getElementById('inputEdu').value || '--';
-      document.getElementById('prevJob').innerText = document.getElementById('inputJob').value || '--';
-      document.getElementById('prevFather').innerText = document.getElementById('inputFather').value || '--';
-      document.getElementById('prevPhone').innerText = document.getElementById('inputPhone').value || '--';
+    let appState = { theme: 'maroon', photo: '', data: {} };
+
+    function updateAll() {
+      appState.data = {
+        symbol: document.getElementById('fSymbol').value,
+        name: document.getElementById('fName').value,
+        dob: document.getElementById('fDob').value,
+        tob: document.getElementById('fTob').value,
+        pob: document.getElementById('fPob').value,
+        height: document.getElementById('fHeight').value,
+        complexion: document.getElementById('fComplexion').value,
+        caste: document.getElementById('fCaste').value,
+        gotra: document.getElementById('fGotra').value,
+        kuldevi: document.getElementById('fKuldevi').value,
+        manglik: document.getElementById('fManglik').value,
+        edu: document.getElementById('fEdu').value,
+        job: document.getElementById('fJob').value,
+        income: document.getElementById('fIncome').value,
+        father: document.getElementById('fFather').value,
+        mother: document.getElementById('fMother').value,
+        siblings: document.getElementById('fSiblings').value,
+        native: document.getElementById('fNative').value,
+        phone: document.getElementById('fPhone').value,
+        address: document.getElementById('fAddress').value,
+        expectation: document.getElementById('fExpectation').value
+      };
+      renderCanvas();
     }
-    function downloadPDF(isPaid) {
-      document.getElementById('watermark').style.display = isPaid ? 'none' : 'block';
-      html2pdf().set({ margin: 0.4, filename: 'Marriage_Biodata.pdf', html2canvas: { scale: 2 } }).from(document.getElementById('pdfTemplate')).save();
+
+    function uploadPhoto(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          appState.photo = evt.target.result;
+          document.getElementById('pImg').src = appState.photo;
+          document.getElementById('pPhotoBox').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
     }
-    function triggerPayment() { alert("Razorpay Modal Opens for ₹29 payment."); }
+
+    function formatDate(raw) {
+      if (!raw) return '';
+      const d = new Date(raw);
+      return isNaN(d.getTime()) ? raw : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function renderCanvas() {
+      const d = appState.data;
+      document.getElementById('pSymbol').innerText = d.symbol || '';
+      document.getElementById('pName').innerText = d.name || 'YOUR NAME HERE';
+
+      const row = (label, value) => value ? `<tr><td style="width:38%; font-weight:600; color:#4b5563;">${label}:</td><td style="width:62%; font-weight:700; color:#111827;">${value}</td></tr>` : '';
+
+      let dobDetails = [formatDate(d.dob), d.tob, d.pob].filter(Boolean).join(' | ');
+
+      document.getElementById('tbPersonal').innerHTML = 
+        row('DOB & Place', dobDetails) +
+        row('Height', d.height) +
+        row('Complexion', d.complexion) +
+        row('Religion/Caste', d.caste) +
+        row('Gotra', d.gotra) +
+        row('Kuldevi', d.kuldevi) +
+        row('Manglik Status', d.manglik);
+
+      document.getElementById('tbEdu').innerHTML = 
+        row('Education', d.edu) +
+        row('Occupation', d.job) +
+        row('Annual Income', d.income);
+
+      document.getElementById('tbFamily').innerHTML = 
+        row("Father's Name", d.father) +
+        row("Mother's Name", d.mother) +
+        row('Siblings', d.siblings) +
+        row('Native Place', d.native);
+
+      document.getElementById('tbContact').innerHTML = 
+        row('Phone Number', d.phone) +
+        row('Address', d.address) +
+        row('Expectations', d.expectation);
+    }
+
+    function setTheme(theme) {
+      appState.theme = theme;
+      const headers = ['hPersonal', 'hEdu', 'hFamily', 'hContact'];
+      const pHeader = document.getElementById('pHeader');
+      const pName = document.getElementById('pName');
+      const pSymbol = document.getElementById('pSymbol');
+
+      if (theme === 'maroon') {
+        pSymbol.style.color = '#b91c1c'; pHeader.style.color = '#b91c1c';
+        pName.className = "text-xl font-bold text-center text-gray-900 uppercase border-b-2 border-red-700 pb-2 mb-4";
+        headers.forEach(h => document.getElementById(h).className = "font-bold text-[10px] bg-red-50 text-red-800 px-2 py-0.5 rounded border-l-2 border-red-700 mb-1 uppercase");
+      } else if (theme === 'navy') {
+        pSymbol.style.color = '#1e3a8a'; pHeader.style.color = '#1e3a8a';
+        pName.className = "text-xl font-bold text-center text-blue-900 uppercase border-b-2 border-blue-800 pb-2 mb-4";
+        headers.forEach(h => document.getElementById(h).className = "font-bold text-[10px] bg-blue-50 text-blue-900 px-2 py-0.5 rounded border-l-2 border-blue-800 mb-1 uppercase");
+      } else {
+        pSymbol.style.color = '#374151'; pHeader.style.color = '#374151';
+        pName.className = "text-xl font-bold text-center text-gray-800 uppercase border-b border-gray-400 pb-2 mb-4";
+        headers.forEach(h => document.getElementById(h).className = "font-bold text-[10px] text-gray-800 border-b border-gray-300 pb-0.5 mb-1 uppercase tracking-wide");
+      }
+    }
+
+    function openModal() { document.getElementById('downloadModal').classList.remove('hidden'); }
+    function closeModal() { document.getElementById('downloadModal').classList.add('hidden'); }
+
+    function generatePDF(isPaid) {
+      closeModal();
+      document.getElementById('pdfWatermark').style.display = isPaid ? 'none' : 'block';
+      const el = document.getElementById('pdfCanvas');
+      html2pdf().set({
+        margin: 0.2,
+        filename: `${(appState.data.name || 'Biodata').replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      }).from(el).save().then(() => {
+        document.getElementById('pdfWatermark').style.display = 'block';
+      });
+    }
+
+    function payAndDownload() {
+      closeModal();
+      var options = {
+        "key": "YOUR_RAZORPAY_TEST_KEY_HERE",
+        "amount": "2900",
+        "currency": "INR",
+        "name": "QuickDocs",
+        "description": "Unlock HD Marriage Biodata PDF",
+        "handler": function (response) { generatePDF(true); }
+      };
+      new Razorpay(options).open();
+    }
+
+    updateAll();
   </script>
 </body>
 </html>
