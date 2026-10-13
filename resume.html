@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free ATS Resume Builder – Download PDF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><a class="logo" href="index.html">BioMaker</a><a href="biodata.html" style="font-size:14px;color:var(--brand)">Biodata maker</a></header>
+<div class="wrap">
+  <div class="form" id="form">
+    <h3>Contact</h3>
+    <div id="contact"></div>
+    <h3>Summary</h3>
+    <label class="f"><span>2–3 lines about you</span><textarea rows="3" data-k="summary"></textarea></label>
+    <h3>Experience</h3>
+    <div id="exp"></div>
+    <button class="btn ghost" type="button" id="addExp">+ Add job</button>
+    <h3>Education</h3>
+    <div id="edu"></div>
+    <button class="btn ghost" type="button" id="addEdu">+ Add education</button>
+    <h3>Skills</h3>
+    <label class="f"><span>Separate with commas</span><textarea rows="2" data-k="skills"></textarea></label>
+    <h3>Certifications / Projects (optional)</h3>
+    <label class="f"><span>One per line</span><textarea rows="3" data-k="certs"></textarea></label>
+    <button class="btn" id="dl" style="width:100%;margin-top:10px">Download PDF (₹15)</button>
+    <p class="note" id="msg">The PDF uses plain, selectable text so applicant tracking systems can read it. Use standard English characters.</p>
+  </div>
+  <div><div class="stage" id="stage"><div id="paper" class="ats"></div></div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="pay.js"></script>
+<script src="resume.js"></script>
+</body>
+</html>

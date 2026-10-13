@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Marriage Biodata Maker – Download PDF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><a class="logo" href="index.html">BioMaker</a><a href="resume.html" style="font-size:14px;color:var(--brand)">Resume builder</a></header>
+<div class="wrap">
+  <div class="form" id="form">
+    <div class="row">
+      <label class="f"><span>Biodata language</span>
+        <select id="lang"><option value="en">English</option><option value="hi">हिन्दी (Hindi)</option></select></label>
+      <label class="f"><span>Template</span>
+        <select id="tpl"><option value="classic">Classic</option><option value="modern">Modern</option><option value="royal">Royal</option></select></label>
+    </div>
+    <div class="f"><span>Colour</span><div class="swatches" id="sw"></div></div>
+    <label class="f"><span>Photo</span><input type="file" id="photo" accept="image/*"></label>
+    <div id="fields"></div>
+    <button class="btn" id="dl" style="width:100%;margin-top:10px">Download PDF (₹15)</button>
+    <p class="note" id="msg">Tip: for Hindi, type with your phone or computer's Hindi keyboard.</p>
+  </div>
+  <div>
+    <div class="stage" id="stage"><div id="paper"></div></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="pay.js"></script>
+<script src="biodata.js"></script>
+</body>
+</html>
