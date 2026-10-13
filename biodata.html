@@ -45,25 +45,18 @@
       <div class="mb-6 border-b pb-4">
         <label class="block text-sm font-bold text-gray-700 mb-2">1. Choose Biodata Template Design</label>
         <div class="grid grid-cols-3 gap-3">
-          
-          <!-- Template Card 1: Maroon -->
-          <div onclick="setTheme('maroon')" id="card-maroon" class="cursor-pointer border-2 border-red-600 rounded-lg p-2 bg-red-50/40 text-center transition hover:shadow-md">
+          <div onclick="setTheme('maroon')" id="card-maroon" class="cursor-pointer border-2 border-red-600 rounded-lg p-2 bg-red-50/40 text-center transition">
             <div class="h-10 bg-red-100 rounded mb-1.5 flex items-center justify-center text-red-700 font-bold text-xs">ॐ MAROON</div>
-            <span class="text-[11px] font-bold text-red-800 block">Traditional Maroon</span>
+            <span class="text-[11px] font-bold text-red-800 block">Traditional</span>
           </div>
-
-          <!-- Template Card 2: Navy -->
-          <div onclick="setTheme('navy')" id="card-navy" class="cursor-pointer border-2 border-gray-200 rounded-lg p-2 bg-white text-center transition hover:shadow-md">
+          <div onclick="setTheme('navy')" id="card-navy" class="cursor-pointer border-2 border-gray-200 rounded-lg p-2 bg-white text-center transition">
             <div class="h-10 bg-blue-100 rounded mb-1.5 flex items-center justify-center text-blue-900 font-bold text-xs">ROYAL NAVY</div>
             <span class="text-[11px] font-bold text-blue-900 block">Royal Navy</span>
           </div>
-
-          <!-- Template Card 3: Slate -->
-          <div onclick="setTheme('slate')" id="card-slate" class="cursor-pointer border-2 border-gray-200 rounded-lg p-2 bg-white text-center transition hover:shadow-md">
+          <div onclick="setTheme('slate')" id="card-slate" class="cursor-pointer border-2 border-gray-200 rounded-lg p-2 bg-white text-center transition">
             <div class="h-10 bg-gray-100 rounded mb-1.5 flex items-center justify-center text-gray-800 font-bold text-xs">CLEAN SLATE</div>
             <span class="text-[11px] font-bold text-gray-700 block">Clean Slate</span>
           </div>
-
         </div>
       </div>
 
@@ -71,7 +64,6 @@
 
       <form id="biodataForm" class="space-y-4" onsubmit="return false;">
         
-        <!-- SECTION 1: Personal Details -->
         <details open class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
             <span>👤 Personal Details</span>
@@ -160,7 +152,6 @@
           </div>
         </details>
 
-        <!-- SECTION 2: Education & Career -->
         <details class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
             <span>🎓 Education & Occupation</span>
@@ -173,7 +164,7 @@
             </div>
             <div>
               <label class="block font-semibold mb-1">Occupation / Organization</label>
-              <input type="text" id="fJob" placeholder="Software Engineer / Student" oninput="updateAll()" class="w-full p-2 border rounded">
+              <input type="text" id="fJob" placeholder="Software Engineer" oninput="updateAll()" class="w-full p-2 border rounded">
             </div>
             <div>
               <label class="block font-semibold mb-1">Annual Income (Optional)</label>
@@ -182,7 +173,6 @@
           </div>
         </details>
 
-        <!-- SECTION 3: Family Details -->
         <details class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
             <span>👨‍👩‍👧‍👦 Family Background</span>
@@ -208,7 +198,6 @@
           </div>
         </details>
 
-        <!-- SECTION 4: Contact & Photo -->
         <details open class="border rounded-lg p-3 bg-gray-50">
           <summary class="font-bold text-sm text-gray-800 cursor-pointer flex justify-between items-center">
             <span>📞 Contact Info & Profile Photo</span>
@@ -247,19 +236,16 @@
       <div class="sticky top-20 w-full flex flex-col items-center">
         <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">A4 Printable Canvas Preview</span>
 
-        <!-- CANVAS RENDER BOX USING STRICT INLINE STYLES FOR PDF CAPTURE -->
         <div id="pdfCanvas" class="a4-canvas bg-white p-6 rounded shadow-lg border border-gray-300 text-gray-800 text-xs flex flex-col justify-between">
           <div>
             <div id="pSymbol" style="text-align: center; font-size: 20px; font-weight: bold; color: #b91c1c; margin-bottom: 2px;">ॐ</div>
             <h2 id="pHeader" style="text-align: center; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #b91c1c; text-transform: uppercase; margin-bottom: 4px;">MARRIAGE BIODATA</h2>
             <h1 id="pName" style="text-align: center; font-size: 20px; font-weight: bold; color: #111827; text-transform: uppercase; border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">YOUR NAME HERE</h1>
 
-            <!-- Profile Photo -->
             <div id="pPhotoBox" class="hidden mb-4 flex justify-center">
               <img id="pImg" src="" alt="Photo" style="width: 100px; height: 120px; object-fit: cover; border: 2px solid #b91c1c; border-radius: 4px;">
             </div>
 
-            <!-- Content Tables -->
             <div class="space-y-3">
               <div>
                 <div id="hPersonal" style="font-weight: bold; font-size: 10px; background-color: #fef2f2; color: #991b1b; padding: 3px 8px; border-left: 3px solid #b91c1c; text-transform: uppercase; margin-bottom: 4px;">Personal Details</div>
@@ -316,11 +302,7 @@
   </div>
 
   <script>
-    let appState = {
-      theme: 'maroon',
-      photo: '',
-      data: {}
-    };
+    let appState = { theme: 'maroon', photo: '', data: {} };
 
     function updateAll() {
       appState.data = {
@@ -409,8 +391,7 @@
     function setTheme(theme) {
       appState.theme = theme;
       
-      const cards = ['maroon', 'navy', 'slate'];
-      cards.forEach(c => {
+      ['maroon', 'navy', 'slate'].forEach(c => {
         const card = document.getElementById('card-' + c);
         if (c === theme) {
           card.style.borderColor = c === 'maroon' ? '#b91c1c' : (c === 'navy' ? '#1e3a8a' : '#374151');
@@ -427,31 +408,24 @@
       const pImg = document.getElementById('pImg');
       const headers = ['hPersonal', 'hEdu', 'hFamily', 'hContact'];
 
-      if (theme === 'maroon') {
-        pSymbol.style.color = '#b91c1c'; pHeader.style.color = '#b91c1c';
-        pName.style.borderBottom = '2px solid #b91c1c'; pName.style.color = '#111827';
-        pImg.style.borderColor = '#b91c1c';
-        headers.forEach(h => {
-          const el = document.getElementById(h);
-          el.style.backgroundColor = '#fef2f2'; el.style.color = '#991b1b'; el.style.borderLeft = '3px solid #b91c1c';
-        });
-      } else if (theme === 'navy') {
-        pSymbol.style.color = '#1e3a8a'; pHeader.style.color = '#1e3a8a';
-        pName.style.borderBottom = '2px solid #1e3a8a'; pName.style.color = '#1e3a8a';
-        pImg.style.borderColor = '#1e3a8a';
-        headers.forEach(h => {
-          const el = document.getElementById(h);
-          el.style.backgroundColor = '#eff6ff'; el.style.color = '#1e3a8a'; el.style.borderLeft = '3px solid #1e3a8a';
-        });
-      } else { // slate
-        pSymbol.style.color = '#374151'; pHeader.style.color = '#374151';
-        pName.style.borderBottom = '1px solid #9ca3af'; pName.style.color = '#374151';
-        pImg.style.borderColor = '#374151';
-        headers.forEach(h => {
-          const el = document.getElementById(h);
-          el.style.backgroundColor = '#f3f4f6'; el.style.color = '#1f2937'; el.style.borderLeft = '3px solid #4b5563';
-        });
-      }
+      let color = theme === 'maroon' ? '#b91c1c' : (theme === 'navy' ? '#1e3a8a' : '#374151');
+      let bgColor = theme === 'maroon' ? '#fef2f2' : (theme === 'navy' ? '#eff6ff' : '#f3f4f6');
+      let textColor = theme === 'maroon' ? '#991b1b' : (theme === 'navy' ? '#1e3a8a' : '#1f2937');
+
+      pSymbol.style.color = color;
+      pHeader.style.color = color;
+      pName.style.borderBottom = `2px solid ${color}`;
+      pName.style.color = theme === 'navy' ? '#1e3a8a' : '#111827';
+      if(pImg) pImg.style.borderColor = color;
+
+      headers.forEach(h => {
+        const el = document.getElementById(h);
+        if(el) {
+          el.style.backgroundColor = bgColor;
+          el.style.color = textColor;
+          el.style.borderLeft = `3px solid ${color}`;
+        }
+      });
     }
 
     function openModal() { document.getElementById('downloadModal').classList.remove('hidden'); }
@@ -459,20 +433,22 @@
 
     function generatePDF(isPaid) {
       closeModal();
-      document.getElementById('pdfWatermark').style.display = isPaid ? 'none' : 'block';
+      const watermark = document.getElementById('pdfWatermark');
+      watermark.style.display = isPaid ? 'none' : 'block';
       
       const element = document.getElementById('pdfCanvas');
       
+      // Explicit configuration options to guarantee element capture
       const opt = {
         margin:       0.2,
         filename:     `${(appState.data.name || 'Biodata').replace(/\s+/g, '_')}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        html2canvas:  { scale: 2, useCORS: true, logging: false, windowWidth: element.scrollWidth },
         jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
 
-      html2pdf().set(opt).from(element).save().then(() => {
-        document.getElementById('pdfWatermark').style.display = 'block';
+      html2pdf().from(element).set(opt).save().then(() => {
+        watermark.style.display = 'block';
       });
     }
 
